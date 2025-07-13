@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FiSun, FiMoon } from "react-icons/fi";
+import { FaLaptopCode } from "react-icons/fa";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,143 +28,114 @@ export default function Navbar() {
   const toggleDarkMode = () => setIsDark((d) => !d);
   const toggleMenu = () => setIsOpen((o) => !o);
 
-  // Variants pour l'animation du menu mobile
   const menuVariants = {
-    hidden: { opacity: 0, height: 0, transition: { duration: 0.3, ease: "easeInOut" } },
-    visible: { opacity: 1, height: "auto", transition: { duration: 0.3, ease: "easeInOut" } },
+    hidden: { opacity: 0, height: 0 },
+    visible: { opacity: 1, height: "auto" },
   };
 
-  // Variants pour les barres du hamburger
-  const topBarVariants = {
-    closed: { rotate: 0, y: 0 },
-    open: { rotate: 45, y: 8 },
-  };
-  const middleBarVariants = {
-    closed: { opacity: 1 },
-    open: { opacity: 0 },
-  };
-  const bottomBarVariants = {
-    closed: { rotate: 0, y: 0 },
-    open: { rotate: -45, y: -8 },
-  };
+  const links = [
+    { name: "Accueil", href: "#home" },
+    { name: "À propos", href: "#about" },
+    { name: "Projets", href: "#projects" },
+    { name: "Contact", href: "#contact" },
+  ];
 
   return (
-    <nav className="bg-primary text-text dark:bg-text dark:text-secondary shadow-md fixed w-full z-50">
+    <nav className="backdrop-blur-lg bg-primary/70 dark:bg-text/70 text-text dark:text-secondary fixed w-full z-50 shadow-sm border-b border-white/10 transition-colors">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         {/* Logo */}
-        <div className="font-bold text-xl cursor-pointer select-none">
-          <span className="text-accent dark:text-highlight">Port</span>folio
+        {/* Logo avec icône */}
+        <div className="flex items-center gap-2 text-2xl font-black tracking-tight text-accent dark:text-highlight select-none">
+          <FaLaptopCode className="w-6 h-6 text-black dark:text-secondary"  />
+          <span>
+            Mamoudou<span className="text-text dark:text-secondary">.</span>
+          </span>
         </div>
 
-        {/* Desktop menu */}
-        <ul className="hidden md:flex space-x-8 font-semibold">
-          <li>
-            <a href="#home" className="hover:text-accent dark:hover:text-highlight transition">
-              Home
-            </a>
-          </li>
-          <li>
-            <a href="#about" className="hover:text-accent dark:hover:text-highlight transition">
-              A propos
-            </a>
-          </li>
-          <li>
-            <a href="#projects" className="hover:text-accent dark:hover:text-highlight transition">
-              Projects
-            </a>
-          </li>
-          <li>
-            <a href="#contact" className="hover:text-accent dark:hover:text-highlight transition">
-              Contact
-            </a>
-          </li>
+        {/* Desktop Menu */}
+        <ul className="hidden md:flex space-x-10 text-sm font-medium">
+          {links.map((link) => (
+            <li key={link.name}>
+              <a href={link.href} className="relative group transition">
+                <span>{link.name}</span>
+                <span className="block h-0.5 w-0 bg-accent group-hover:w-full transition-all duration-300"></span>
+              </a>
+            </li>
+          ))}
         </ul>
 
-        {/* Dark mode toggle button */}
+        {/* Dark Mode Toggle */}
         <button
           onClick={toggleDarkMode}
+          className="hidden md:flex items-center justify-center ml-4 p-2 rounded-full hover:bg-accent/20 transition"
           aria-label="Toggle Dark Mode"
-          className="hidden md:inline-block ml-4 p-2 rounded hover:bg-accent hover:text-white transition"
         >
-          {isDark ? "☀️" : "🌙"}
+          {isDark ? (
+            <FiSun className="w-5 h-5" />
+          ) : (
+            <FiMoon className="w-5 h-5" />
+          )}
         </button>
 
-        {/* Mobile hamburger + dark mode toggle */}
-        <div className="md:hidden flex items-center">
+        {/* Mobile Menu */}
+        <div className="md:hidden flex items-center space-x-3">
           <button
             onClick={toggleDarkMode}
             aria-label="Toggle Dark Mode"
-            className="mr-4 p-2 rounded hover:bg-accent hover:text-white transition"
+            className="p-2 rounded-full hover:bg-accent/20 transition"
           >
-            {isDark ? "☀️" : "🌙"}
+            {isDark ? (
+              <FiSun className="w-5 h-5" />
+            ) : (
+              <FiMoon className="w-5 h-5" />
+            )}
           </button>
 
           <button
             onClick={toggleMenu}
+            className="flex flex-col justify-center items-center w-8 h-8 space-y-1.5"
             aria-label="Toggle menu"
-            className="flex flex-col justify-center items-center w-8 h-8 space-y-1 focus:outline-none"
           >
             <motion.span
               className="block h-0.5 w-6 bg-text dark:bg-secondary rounded"
-              animate={isOpen ? "open" : "closed"}
-              variants={topBarVariants}
+              animate={isOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
               transition={{ duration: 0.3 }}
             />
             <motion.span
               className="block h-0.5 w-6 bg-text dark:bg-secondary rounded"
-              animate={isOpen ? "open" : "closed"}
-              variants={middleBarVariants}
+              animate={isOpen ? { opacity: 0 } : { opacity: 1 }}
               transition={{ duration: 0.3 }}
             />
             <motion.span
               className="block h-0.5 w-6 bg-text dark:bg-secondary rounded"
-              animate={isOpen ? "open" : "closed"}
-              variants={bottomBarVariants}
+              animate={isOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 0 }}
               transition={{ duration: 0.3 }}
             />
           </button>
         </div>
       </div>
 
-      {/* Mobile menu animé avec AnimatePresence */}
+      {/* Mobile dropdown */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            key="mobile-menu"
+            key="dropdown"
             initial="hidden"
             animate="visible"
             exit="hidden"
             variants={menuVariants}
-            className="md:hidden bg-primary dark:bg-text text-text dark:text-secondary px-6 py-4 space-y-4 font-semibold overflow-hidden"
+            className="md:hidden bg-primary dark:bg-text text-text dark:text-secondary px-6 py-4 space-y-4 font-medium border-t border-white/10"
           >
-            <a
-              href="#home"
-              className="block hover:text-accent dark:hover:text-highlight transition"
-              onClick={() => setIsOpen(false)}
-            >
-              Home
-            </a>
-            <a
-              href="#about"
-              className="block hover:text-accent dark:hover:text-highlight transition"
-              onClick={() => setIsOpen(false)}
-            >
-              A propos
-            </a>
-            <a
-              href="#projects"
-              className="block hover:text-accent dark:hover:text-highlight transition"
-              onClick={() => setIsOpen(false)}
-            >
-              Projects
-            </a>
-            <a
-              href="#contact"
-              className="block hover:text-accent dark:hover:text-highlight transition"
-              onClick={() => setIsOpen(false)}
-            >
-              Contact
-            </a>
+            {links.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                className="block hover:text-accent dark:hover:text-highlight transition"
+                onClick={() => setIsOpen(false)}
+              >
+                {link.name}
+              </a>
+            ))}
           </motion.div>
         )}
       </AnimatePresence>
