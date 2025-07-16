@@ -48,7 +48,7 @@ export default function Navbar() {
         <div className="flex items-center gap-2 text-2xl font-black tracking-tight text-accent dark:text-highlight select-none">
           <FaLaptopCode className="w-6 h-6 text-black dark:text-secondary"  />
           <span>
-            Mamoudou<span className="text-text dark:text-secondary">.</span>
+            Mamoudou<span className="text-text dark:text-secondary">.dev</span>
           </span>
         </div>
 

@@ -2,31 +2,34 @@ import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import emailjs from "@emailjs/browser";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
+import toast from "react-hot-toast";
 
 export default function Contact() {
   const formRef = useRef();
-  const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const sendEmail = (e) => {
     e.preventDefault();
     setLoading(true);
 
+    toast.loading("Envoi du message...", { id: "send" });
+
     emailjs
       .sendForm(
-        "YOUR_SERVICE_ID",     // 🔁 Remplace par ton ID emailjs
-        "YOUR_TEMPLATE_ID",    // 🔁 Remplace par ton template ID
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         formRef.current,
-        "YOUR_PUBLIC_KEY"      // 🔁 Remplace par ta clé publique emailjs
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       )
       .then(
         () => {
-          setSent(true);
+          toast.success("✅ Message envoyé avec succès !", { id: "send" });
           setLoading(false);
           formRef.current.reset();
         },
         (error) => {
-          console.error(error.text);
+          toast.error("❌ Échec de l'envoi du message", { id: "send" });
+          console.error("Erreur EmailJS :", error.text);
           setLoading(false);
         }
       );
@@ -40,23 +43,21 @@ export default function Contact() {
       <div className="max-w-4xl mx-auto text-center">
         {/* Titre */}
         <motion.h2
-          className="text-3xl md:text-4xl font-extrabold mb-4"
+          className="text-4xl font-bold mb-2 tracking-tight"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
         >
-          Contactez-moi
+          Me contacter
         </motion.h2>
 
         <motion.p
-          className="text-lg mb-10"
+          className="text-base text-muted mb-10"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.2, duration: 0.6 }}
-          viewport={{ once: true }}
         >
-          Un projet, une idée ou une mission freelance ? Je suis toujours ouvert à discuter.
+          Une idée de projet ? Discutons-en ensemble.
         </motion.p>
 
         {/* Réseaux */}
@@ -65,21 +66,20 @@ export default function Contact() {
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.6 }}
-          viewport={{ once: true }}
         >
           <a
-            href="https://github.com/mamoudou" // 🔁 mets ton vrai GitHub
+            href="https://github.com/Cissemamoudou10"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-accent hover:scale-110 transition text-2xl"
+            className="text-accent hover:scale-125 transition text-2xl"
           >
             <FaGithub />
           </a>
           <a
-            href="https://www.linkedin.com/in/mamoudou" // 🔁 mets ton vrai LinkedIn
+            href="https://www.linkedin.com/in/mamoudou-cisse-115230155/"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-accent hover:scale-110 transition text-2xl"
+            className="text-accent hover:scale-125 transition text-2xl"
           >
             <FaLinkedin />
           </a>
@@ -93,44 +93,43 @@ export default function Contact() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.6 }}
-          viewport={{ once: true }}
         >
-          <div className="flex flex-col space-y-2 col-span-1 md:col-span-2">
+          <div className="col-span-1 md:col-span-2">
             <label className="text-sm font-medium">Nom</label>
             <input
               type="text"
               name="user_name"
               required
-              className="p-3 rounded bg-white/70 dark:bg-black/30 border border-gray-300 dark:border-gray-700"
-              placeholder="Entrez votre nom"
+              className="w-full p-4 rounded-md bg-white/80 dark:bg-black/30 border border-gray-300 dark:border-gray-700 outline-none focus:ring-2 focus:ring-accent"
+              placeholder="Votre nom complet"
             />
           </div>
-          <div className="flex flex-col space-y-2">
+          <div>
             <label className="text-sm font-medium">Email</label>
             <input
               type="email"
               name="user_email"
               required
-              className="p-3 rounded bg-white/70 dark:bg-black/30 border border-gray-300 dark:border-gray-700"
-              placeholder="Entrez votre email"
+              className="w-full p-4 rounded-md bg-white/80 dark:bg-black/30 border border-gray-300 dark:border-gray-700 outline-none focus:ring-2 focus:ring-accent"
+              placeholder="exemple@mail.com"
             />
           </div>
-          <div className="flex flex-col space-y-2">
+          <div>
             <label className="text-sm font-medium">Objet</label>
             <input
               type="text"
               name="subject"
-              className="p-3 rounded bg-white/70 dark:bg-black/30 border border-gray-300 dark:border-gray-700"
+              className="w-full p-4 rounded-md bg-white/80 dark:bg-black/30 border border-gray-300 dark:border-gray-700 outline-none focus:ring-2 focus:ring-accent"
               placeholder="Objet du message"
             />
           </div>
-          <div className="flex flex-col space-y-2 col-span-1 md:col-span-2">
+          <div className="col-span-1 md:col-span-2">
             <label className="text-sm font-medium">Message</label>
             <textarea
               name="message"
               rows="5"
               required
-              className="p-3 rounded bg-white/70 dark:bg-black/30 border border-gray-300 dark:border-gray-700"
+              className="w-full p-4 rounded-md bg-white/80 dark:bg-black/30 border border-gray-300 dark:border-gray-700 outline-none focus:ring-2 focus:ring-accent"
               placeholder="Tapez votre message ici..."
             ></textarea>
           </div>
@@ -138,16 +137,11 @@ export default function Contact() {
             <button
               type="submit"
               disabled={loading}
-              className="bg-accent hover:bg-primary text-white font-semibold px-6 py-3 rounded shadow-lg transition"
+              className="bg-accent hover:bg-primary text-white font-semibold px-8 py-3 rounded-lg shadow-lg transition-all duration-300 disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              {loading ? "Envoi en cours..." : "Envoyer le message"}
+              {loading ? "Envoi..." : "Envoyer"}
             </button>
           </div>
-          {sent && (
-            <p className="col-span-2 text-center text-green-600 mt-4">
-              ✅ Message envoyé avec succès !
-            </p>
-          )}
         </motion.form>
       </div>
     </section>

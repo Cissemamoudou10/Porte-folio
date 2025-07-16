@@ -7,7 +7,9 @@ export default function Footer() {
         
         {/* Logo / Nom */}
         <div className="text-lg sm:text-xl font-semibold tracking-tight text-accent dark:text-highlight">
-          Mamoudou © {new Date().getFullYear()}
+        <span>
+            Mamoudou<span className="text-text dark:text-secondary">.dev © {new Date().getFullYear()}</span>
+          </span> 
         </div>
 
         {/* Navigation Footer */}
@@ -32,7 +34,7 @@ export default function Footer() {
         {/* Réseaux sociaux */}
         <div className="flex space-x-5 text-xl">
           <a
-            href="https://linkedin.com/in/tonprofil" // 🔁 Remplace par ton vrai lien
+            href="https://www.linkedin.com/in/mamoudou-cisse-115230155/" // 🔁 Remplace par ton vrai lien
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-highlight transition"
@@ -40,7 +42,7 @@ export default function Footer() {
             <FaLinkedin />
           </a>
           <a
-            href="https://github.com/tonprofil" // 🔁 Remplace par ton vrai lien
+            href="https://github.com/Cissemamoudou10" // 🔁 Remplace par ton vrai lien
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-highlight transition"
